@@ -1,4 +1,4 @@
-name: Deploy shapez.io
+name: Deploy shapez.io to GitHub Pages
 
 on:
   push:
@@ -15,25 +15,25 @@ concurrency:
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node.js 16
         uses: actions/setup-node@v4
         with:
           node-version: 16
 
-      - name: Install root dependencies
-        run: yarn install
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile || yarn install
 
-      - name: Install build tool dependencies
+      - name: Install gulp dependencies
         run: |
           cd gulp
-          yarn install
+          yarn install --frozen-lockfile || yarn install
 
-      - name: Compile game build
+      - name: Build game output
         run: |
           cd gulp
           npx gulp build || npx gulp
